@@ -5,7 +5,7 @@ import { FaRegMoon, FaRegSun } from "react-icons/fa";
 export function Header() {
   const { toogleTheme, isDarkMode } = useTheme();
   return (
-    <AppBar>
+    <AppBar className="mb-4">
       <AppBar.Tool className={classNames("justify-between mx-auto max-w-7xl")}>
         <h2
           className={classNames(

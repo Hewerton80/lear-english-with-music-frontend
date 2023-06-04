@@ -4,7 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { HikariProviders, globalStyles } from "hikari-ui";
 import classNames from "classnames";
-import { Header } from "@/components/common/Header";
+import { Header } from "@/app/components/common/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
