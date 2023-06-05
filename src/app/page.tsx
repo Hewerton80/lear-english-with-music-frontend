@@ -1,12 +1,16 @@
 "use client";
-import { Card } from "hikari-ui";
+import { Spinner } from "hikari-ui";
 import classnames from "classnames";
 // import ReactPlayer from "";
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ReactPlayer = dynamic(() => import("react-player"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => (
+    <div className="flex items-center justify-center w-full h-full">
+      <Spinner size={38} />
+    </div>
+  ),
 });
 
 // https://www.letras.mus.br
@@ -23,13 +27,10 @@ export default function Home() {
 
   return (
     <div
-      className={classnames(
-        "flex flex-col",
-        "mx-auto space-y-4",
-        "max-w-2xl w-full"
-      )}
+      className={classnames("flex flex-col", "space-y-4", "max-w-2xl w-full")}
     >
       <div className="flex flex-col space-y-4">
+        <h2>My only onde</h2>
         <div className="aspect-video">
           {hasWindow && (
             <ReactPlayer

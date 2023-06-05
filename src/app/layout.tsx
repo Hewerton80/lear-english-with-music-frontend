@@ -4,7 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { HikariProviders, globalStyles } from "hikari-ui";
 import classNames from "classnames";
-import { Header } from "@/app/components/common/Header";
+import { Header } from "@/components/common/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +24,9 @@ export default function RootLayout({
     <HikariProviders>
       <html lang="en">
         <body className={inter.className}>
-          <div className={classNames("flex flex-col", "min-h-screen")}>
+          <div
+            className={classNames("flex flex-col items-center", "min-h-screen")}
+          >
             <Header />
             {children}
           </div>
