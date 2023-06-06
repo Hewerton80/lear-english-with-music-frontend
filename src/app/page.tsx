@@ -37,38 +37,11 @@ export default function Home() {
               url="https://www.youtube.com/watch?v=EMZRnFWUGa0"
               width="100%"
               height="100%"
-              // onProgress={({ playedSeconds }) =>
-              //   console.log("playedSeconds", playedSeconds)
-              // }
               controls
             />
           )}
-          {/* <iframe
-            width="100%"
-            height="100%"
-            src="https://www.youtube.com/embed/ONHJBgQf9vk"
-            title="The Weeknd - Blinding Lights (Tradução/Letra Pt-Br-Inglês)"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          /> */}
         </div>
-        {/* <Slider>
-          <Slider.Track>
-            <Slider.Range />
-          </Slider.Track>
-          <Slider.Thumb />
-        </Slider> */}
       </div>
-      {/* <Card>
-        <Card.Body>
-          <div className="flex flex-col justify-center">
-            <h3 className="text-lg text-center font-bold italic">
-              bliding light
-            </h3>
-            <h3 className="text-lg text-center italic">luz azul</h3>
-          </div>
-        </Card.Body>
-      </Card> */}
     </div>
   );
 }

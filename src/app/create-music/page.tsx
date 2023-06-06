@@ -1,11 +1,11 @@
 "use client";
-import { FormAuthor } from "@/components/commomPages/FormAurhor";
+import { FormMusic } from "@/components/commomPages/FormMusic";
 import { Breadcrumbs } from "hikari-ui";
 import Link from "next/link";
 
 export default function CreateAuthor() {
   return (
-    <div className="flex flex-col max-w-2xl w-full space-y-2">
+    <div className="flex flex-col max-w-7xl w-full space-y-2">
       <Breadcrumbs>
         <Breadcrumbs.Link href="/" asChild>
           <Link href="/">Home</Link>
@@ -14,7 +14,7 @@ export default function CreateAuthor() {
           Criar banda/cantor
         </Breadcrumbs.Link>
       </Breadcrumbs>
-      <FormAuthor />
+      <FormMusic />
     </div>
   );
 }

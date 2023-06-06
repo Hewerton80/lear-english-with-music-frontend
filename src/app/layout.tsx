@@ -28,7 +28,14 @@ export default function RootLayout({
             className={classNames("flex flex-col items-center", "min-h-screen")}
           >
             <Header />
-            {children}
+            <div
+              className={classNames(
+                "flex flex-col items-center flex-1",
+                "w-full h-full px-4"
+              )}
+            >
+              {children}
+            </div>
           </div>
         </body>
       </html>
