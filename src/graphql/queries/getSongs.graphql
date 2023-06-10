@@ -1,0 +1,23 @@
+query GetSongs($paginationInput: PaginationInput!) {
+  songs(paginationInput: $paginationInput) {
+    currentPage
+    perPage
+    total
+    lastPage
+    next
+    prev
+    docs {
+      id
+      title
+      slug
+      createdAt
+      url
+      authors {
+        id
+        name
+        slug
+      }
+      lyric
+    }
+  }
+}

@@ -1,0 +1,15 @@
+query GetAuthors($input: PaginationInput!, $orderBy: AuthorOrderByWithRelationInput, $where: AuthorWhereInput) {
+  authors(input: $input, orderBy: $orderBy, where: $where) {
+    currentPage
+    perPage
+    total
+    lastPage
+    next
+    prev
+    docs {
+      name
+      slug
+      id
+    }
+  }
+}

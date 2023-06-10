@@ -1,0 +1,14 @@
+query GetSong($where: SongWhereUniqueInput!) {
+  song(where: $where) {
+    id
+    lyric
+    slug
+    title
+    url
+    authors {
+      name
+      slug
+      id
+    }
+  }
+}
