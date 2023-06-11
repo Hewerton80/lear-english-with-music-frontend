@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { HikariProviders, globalStyles } from "hikari-ui";
 import classNames from "classnames";
 import { Header } from "@/components/common/Header";
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "@/services/apolloClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,26 +21,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   globalStyles();
-
   return (
-    <HikariProviders>
-      <html lang="en">
-        <body className={inter.className}>
-          <div
-            className={classNames("flex flex-col items-center", "min-h-screen")}
-          >
-            <Header />
+    <ApolloProvider client={apolloClient}>
+      <HikariProviders>
+        <html lang="en">
+          <body className={inter.className}>
             <div
               className={classNames(
-                "flex flex-col items-center flex-1",
-                "w-full h-full px-4"
+                "flex flex-col items-center",
+                "min-h-screen"
               )}
             >
-              {children}
+              <Header />
+              <div
+                className={classNames(
+                  "flex flex-col items-center flex-1",
+                  "w-full h-full px-4"
+                )}
+              >
+                {children}
+              </div>
             </div>
-          </div>
-        </body>
-      </html>
-    </HikariProviders>
+          </body>
+        </html>
+      </HikariProviders>
+    </ApolloProvider>
   );
 }

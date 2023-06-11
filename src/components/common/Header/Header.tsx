@@ -12,7 +12,7 @@ export function Header() {
             "text-base sm:text-2xl text-slate-200 font-bold"
           )}
         >
-          Gerador de dados fakes
+          Aprenda inglês com música
         </h2>
         <div className="flex items-center">
           <IconButton

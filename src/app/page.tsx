@@ -1,47 +1,81 @@
 "use client";
-import { Spinner } from "hikari-ui";
+import {
+  Breadcrumbs,
+  DataTable,
+  IconButton,
+  IRowDataTable,
+  IColmunDataTable,
+  Spinner,
+} from "hikari-ui";
 import classnames from "classnames";
-// import ReactPlayer from "";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { FaRegEye } from "react-icons/fa";
+import { useMemo } from "react";
+import { useGetSongsQuery } from "@/graphql/generated-types";
+import Link from "next/link";
 
-const ReactPlayer = dynamic(() => import("react-player"), {
-  loading: () => (
-    <div className="flex items-center justify-center w-full h-full">
-      <Spinner size={38} />
-    </div>
-  ),
-});
-
-// https://www.letras.mus.br
-// https://www.youtube.com/watch?v=ONHJBgQf9vk
-// https://www.youtube.com/watch?v=EMZRnFWUGa0
 export default function Home() {
-  const [hasWindow, setHasWindow] = useState(false);
+  const {
+    data: { songs } = {},
+    loading: loadingSongs,
+    error: errorSongs,
+  } = useGetSongsQuery({
+    variables: { paginationInput: { currentPage: 1, perPage: 25 } },
+  });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setHasWindow(true);
-    }
+  // const songs = useMemo(() => data?.songs, [data]);
+
+  // useEffect(() => {
+  //   console.log("songsData", songsData);
+  // }, [songsData]);
+
+  // useEffect(() => {
+  //   console.log("songsData", songsData);
+  // }, [songsData]);
+
+  // useEffect(() => {
+  //   console.log("errorSongs", errorSongs);
+  // }, [errorSongs]);
+
+  const rows = useMemo<IRowDataTable[]>(() => {
+    return (
+      songs?.docs?.map((song) => ({
+        contents: [
+          <p key={song?.id + "title"}>{song.title}</p>,
+          <p key={song?.id + "authors"}>
+            {song.authors?.map((author) => author?.name).join(", ")}
+          </p>,
+          <div key={song?.id + "actions"} className="flex justify-end">
+            <Link href={`/song/${song?.slug}`}>
+              <IconButton icon={<FaRegEye />} size="sm" />
+            </Link>
+          </div>,
+        ],
+        value: song?.id,
+      })) || []
+    );
+  }, [songs]);
+
+  const columns = useMemo<IColmunDataTable[]>(() => {
+    return [
+      { field: "title", content: "Título" },
+      { field: "author", content: "Cantor(a)/Banda" },
+      { field: "", content: "" },
+    ];
   }, []);
 
   return (
     <div
       className={classnames("flex flex-col", "space-y-4", "max-w-2xl w-full")}
     >
-      <div className="flex flex-col space-y-4">
-        <h2>My only onde</h2>
-        <div className="aspect-video">
-          {hasWindow && (
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=EMZRnFWUGa0"
-              width="100%"
-              height="100%"
-              controls
-            />
-          )}
+      <Breadcrumbs>
+        <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+      </Breadcrumbs>
+      {loadingSongs && (
+        <div className="flex items-center justify-center w-full h-full">
+          <Spinner size={38} />
         </div>
-      </div>
+      )}
+      {songs && <DataTable columns={columns} rows={rows} />}
     </div>
   );
 }

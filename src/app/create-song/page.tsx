@@ -1,5 +1,5 @@
 "use client";
-import { FormMusic } from "@/components/commomPages/FormMusic";
+import { FormSong } from "@/components/commomPages/FormSong";
 import { Breadcrumbs } from "hikari-ui";
 import Link from "next/link";
 
@@ -10,11 +10,9 @@ export default function CreateAuthor() {
         <Breadcrumbs.Link href="/" asChild>
           <Link href="/">Home</Link>
         </Breadcrumbs.Link>
-        <Breadcrumbs.Link href="/create-author">
-          Criar banda/cantor
-        </Breadcrumbs.Link>
+        <Breadcrumbs.Link href="/create-author">Criar Música</Breadcrumbs.Link>
       </Breadcrumbs>
-      <FormMusic />
+      <FormSong />
     </div>
   );
 }
