@@ -1,3 +1,4 @@
+"use client";
 import { AppBar, IconButton, useTheme } from "hikari-ui";
 import classNames from "classnames";
 import { FaRegMoon, FaRegSun } from "react-icons/fa";
