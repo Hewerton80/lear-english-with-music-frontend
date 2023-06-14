@@ -19,7 +19,7 @@
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
     "graphql": "^16.6.0",
-    "hikari-ui": "^0.4.2",
+    "hikari-ui": "^0.4.3",
     "next": "13.4.4",
     "postcss": "8.4.24",
     "react": "18.2.0",
