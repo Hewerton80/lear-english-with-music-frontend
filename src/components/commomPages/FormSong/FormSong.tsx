@@ -130,7 +130,6 @@ export function FormSong({ songId }: FormSongProps) {
           graphQLErrorExtensions?.validationErrors
         );
         songErrorTmp = {
-          ...songErrorTmp,
           ...getParsedValidationError(graphQLErrorExtensions?.validationErrors),
         };
       } else {
