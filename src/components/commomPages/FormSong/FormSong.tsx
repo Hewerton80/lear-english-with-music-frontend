@@ -4,7 +4,6 @@ import {
   Card,
   Input,
   Select,
-  Textarea,
   SelectOption,
   useAlert,
 } from "hikari-ui";
@@ -200,13 +199,14 @@ export function FormSong({ songId }: FormSongProps) {
               feedbackText={songError?.url}
               state="danger"
             />
-            <Textarea
+            {/* <Textarea
               value={lyric}
               onChange={(e) => setLyric(e.target.value)}
               label="Letra"
               feedbackText={songError?.lyric}
               state="danger"
-            />
+              rows={8}
+            /> */}
           </div>
         </Card.Body>
         <Card.Footer variantStyle="right">

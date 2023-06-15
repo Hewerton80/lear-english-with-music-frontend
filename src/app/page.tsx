@@ -3,24 +3,32 @@ import {
   Breadcrumbs,
   DataTable,
   IconButton,
+  PaginationBar,
   IRowDataTable,
   IColmunDataTable,
   Spinner,
 } from "hikari-ui";
 import classnames from "classnames";
 import { FaRegEye } from "react-icons/fa";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useGetSongsQuery } from "@/graphql/generated-types";
 import Link from "next/link";
+
+const PER_PAGE = 2;
 
 export default function Home() {
   const {
     data: { songs } = {},
     loading: loadingSongs,
     error: errorSongs,
+    refetch: refetchSongs,
   } = useGetSongsQuery({
-    variables: { paginationInput: { currentPage: 1, perPage: 25 } },
+    variables: { paginationInput: { currentPage: 1, perPage: PER_PAGE } },
   });
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   // const songs = useMemo(() => data?.songs, [data]);
 
@@ -35,6 +43,24 @@ export default function Home() {
   // useEffect(() => {
   //   console.log("errorSongs", errorSongs);
   // }, [errorSongs]);
+
+  useEffect(() => {
+    if (songs) {
+      setCurrentPage(songs?.currentPage);
+      setTotalPages(songs?.lastPage);
+      setTotalRecords(songs?.total);
+    }
+  }, [songs]);
+
+  const handlePage = useCallback(
+    (toPage: number) => {
+      setCurrentPage(toPage);
+      refetchSongs({
+        paginationInput: { currentPage: toPage, perPage: PER_PAGE },
+      });
+    },
+    [refetchSongs]
+  );
 
   const rows = useMemo<IRowDataTable[]>(() => {
     return (
@@ -76,6 +102,14 @@ export default function Home() {
         </div>
       )}
       {songs && <DataTable columns={columns} rows={rows} />}
+      <PaginationBar
+        currentPage={currentPage}
+        totalPages={totalPages}
+        perPage={PER_PAGE}
+        totalRecords={totalRecords}
+        onChangePage={handlePage}
+        disabled={loadingSongs}
+      />
     </div>
   );
 }

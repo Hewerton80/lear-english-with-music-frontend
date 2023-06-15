@@ -3,7 +3,7 @@ import { Breadcrumbs, Spinner } from "hikari-ui";
 import classnames from "classnames";
 // import ReactPlayer from "";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useGetSongQuery } from "@/graphql/generated-types";
 
@@ -30,10 +30,6 @@ export default function Song() {
     variables: { where: { slug: String(params?.slug) } },
   });
 
-  useEffect(() => {
-    console.log("song", song);
-  }, [song]);
-
   return (
     <div
       className={classnames("flex flex-col", "space-y-4", "max-w-2xl w-full")}
@@ -48,6 +44,7 @@ export default function Song() {
             <ReactPlayer url={song?.url} width="100%" height="100%" controls />
           )}
         </div>
+        {song?.lyric && <p>{song?.lyric}</p>}
       </div>
     </div>
   );
