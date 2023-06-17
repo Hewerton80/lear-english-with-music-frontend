@@ -7,14 +7,25 @@ import {
   IRowDataTable,
   IColmunDataTable,
   Spinner,
+  Input,
 } from "hikari-ui";
 import classnames from "classnames";
 import { FaRegEye } from "react-icons/fa";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useGetSongsQuery } from "@/graphql/generated-types";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useGetSongsQuery,
+  GetSongsQueryVariables,
+  SongWhereInput,
+  SortOrder,
+} from "@/graphql/generated-types";
 import Link from "next/link";
+import { useDebouncedCallback } from "use-debounce";
 
-const PER_PAGE = 2;
+const PER_PAGE = 15;
+const initialVariablesQuery: GetSongsQueryVariables = {
+  paginationInput: { currentPage: 1, perPage: PER_PAGE },
+  orderBy: { title: SortOrder.Asc },
+};
 
 export default function Home() {
   const {
@@ -23,43 +34,18 @@ export default function Home() {
     error: errorSongs,
     refetch: refetchSongs,
   } = useGetSongsQuery({
-    variables: { paginationInput: { currentPage: 1, perPage: PER_PAGE } },
+    variables: initialVariablesQuery,
   });
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // const songs = useMemo(() => data?.songs, [data]);
+  const [songNameFilter, setSongNameFilter] = useState("");
 
-  // useEffect(() => {
-  //   console.log("songsData", songsData);
-  // }, [songsData]);
+  const [isWriting, setIsWriting] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("songsData", songsData);
-  // }, [songsData]);
-
-  // useEffect(() => {
-  //   console.log("errorSongs", errorSongs);
-  // }, [errorSongs]);
-
-  useEffect(() => {
-    if (songs) {
-      setCurrentPage(songs?.currentPage);
-      setTotalPages(songs?.lastPage);
-      setTotalRecords(songs?.total);
-    }
-  }, [songs]);
-
-  const handlePage = useCallback(
-    (toPage: number) => {
-      setCurrentPage(toPage);
-      refetchSongs({
-        paginationInput: { currentPage: toPage, perPage: PER_PAGE },
-      });
-    },
-    [refetchSongs]
+  const loadingTableSongs = useMemo(
+    () => isWriting || loadingSongs,
+    [isWriting, loadingSongs]
   );
 
   const rows = useMemo<IRowDataTable[]>(() => {
@@ -89,6 +75,93 @@ export default function Home() {
     ];
   }, []);
 
+  // const songs = useMemo(() => data?.songs, [data]);
+
+  // useEffect(() => {
+  //   console.log("songsData", songsData);
+  // }, [songsData]);
+
+  // useEffect(() => {
+  //   console.log("songsData", songsData);
+  // }, [songsData]);
+
+  // useEffect(() => {
+  //   console.log("errorSongs", errorSongs);
+  // }, [errorSongs]);
+
+  useEffect(() => {
+    if (songs) {
+      setCurrentPage(songs?.currentPage);
+    }
+  }, [songs]);
+
+  const getSongsQueryVariables = useCallback(() => {
+    const songsVariablesFilter: GetSongsQueryVariables = {
+      paginationInput: {
+        perPage: PER_PAGE,
+        currentPage,
+      },
+    };
+
+    let songWhereInput: SongWhereInput = {};
+
+    if (songNameFilter.trim()) {
+      songWhereInput = {
+        ...songWhereInput,
+        title: { contains: songNameFilter.trim() },
+      };
+    }
+    songsVariablesFilter.where = songWhereInput;
+
+    return songsVariablesFilter;
+  }, [currentPage, songNameFilter]);
+
+  const handleRefetchAuthors = useDebouncedCallback(
+    useCallback(
+      (songsQueryVariables: GetSongsQueryVariables) => {
+        console.log("handleRefetchAuthors", songsQueryVariables);
+        refetchSongs(songsQueryVariables);
+        setIsWriting(false);
+      },
+      [refetchSongs]
+    ),
+    1000
+  );
+
+  const handlePage = useCallback(
+    (toPage: number) => {
+      setIsWriting(true);
+      const songsQueryVariables = { ...getSongsQueryVariables() };
+      setCurrentPage(toPage);
+      songsQueryVariables.paginationInput.currentPage = toPage;
+      handleRefetchAuthors(songsQueryVariables);
+    },
+    [getSongsQueryVariables, handleRefetchAuthors]
+  );
+
+  const handleChangeSongNameFilter = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setIsWriting(true);
+      setCurrentPage(1);
+      const futureSongname = e.target.value;
+      setSongNameFilter(futureSongname);
+
+      const songsQueryVariables = { ...getSongsQueryVariables() };
+      songsQueryVariables.paginationInput.currentPage = 1;
+      let songWhereInput: SongWhereInput = songsQueryVariables.where || {};
+
+      songWhereInput = {
+        ...songWhereInput,
+        title: { contains: futureSongname.trim() },
+      };
+
+      songsQueryVariables.where = songWhereInput;
+      console.log("handleChangeSongNameFilter", songsQueryVariables);
+      handleRefetchAuthors(songsQueryVariables);
+    },
+    [getSongsQueryVariables, handleRefetchAuthors]
+  );
+
   return (
     <div
       className={classnames("flex flex-col", "space-y-4", "max-w-2xl w-full")}
@@ -96,19 +169,29 @@ export default function Home() {
       <Breadcrumbs>
         <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
       </Breadcrumbs>
-      {loadingSongs && (
-        <div className="flex items-center justify-center w-full h-full">
+      <div className="grid grid-cols-3">
+        <Input
+          label="Nome da música"
+          placeholder="Easy On Me..."
+          value={songNameFilter}
+          onChange={handleChangeSongNameFilter}
+        />
+      </div>
+      {loadingTableSongs && (
+        <div className="flex items-center justify-center w-full h-full min-h-[500px]">
           <Spinner size={38} />
         </div>
       )}
-      {songs && <DataTable columns={columns} rows={rows} />}
+      {songs && !loadingTableSongs && (
+        <DataTable columns={columns} rows={rows} />
+      )}
       <PaginationBar
-        currentPage={currentPage}
-        totalPages={totalPages}
+        currentPage={songs?.currentPage || 1}
+        totalPages={songs?.lastPage || 1}
         perPage={PER_PAGE}
-        totalRecords={totalRecords}
+        totalRecords={songs?.total || 0}
         onChangePage={handlePage}
-        disabled={loadingSongs}
+        disabled={loadingTableSongs}
       />
     </div>
   );

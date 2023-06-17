@@ -1,5 +1,5 @@
-query GetSongs($paginationInput: PaginationInput!) {
-  songs(paginationInput: $paginationInput) {
+query GetSongs($paginationInput: PaginationInput!, $orderBy: SongOrderByWithRelationInput, $where: SongWhereInput) {
+  songs(paginationInput: $paginationInput, orderBy: $orderBy, where: $where) {
     currentPage
     perPage
     total

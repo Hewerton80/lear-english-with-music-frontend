@@ -503,6 +503,8 @@ export type GetSongQuery = { __typename?: 'Query', song: { __typename?: 'Song', 
 
 export type GetSongsQueryVariables = Exact<{
   paginationInput: PaginationInput;
+  orderBy?: InputMaybe<SongOrderByWithRelationInput>;
+  where?: InputMaybe<SongWhereInput>;
 }>;
 
 
@@ -863,8 +865,8 @@ export function refetchGetSongQuery(variables: GetSongQueryVariables) {
       return { query: GetSongDocument, variables: variables }
     }
 export const GetSongsDocument = gql`
-    query GetSongs($paginationInput: PaginationInput!) {
-  songs(paginationInput: $paginationInput) {
+    query GetSongs($paginationInput: PaginationInput!, $orderBy: SongOrderByWithRelationInput, $where: SongWhereInput) {
+  songs(paginationInput: $paginationInput, orderBy: $orderBy, where: $where) {
     currentPage
     perPage
     total
@@ -920,6 +922,8 @@ export function withGetSongs<TProps, TChildProps = {}, TDataName extends string 
  * const { data, loading, error } = useGetSongsQuery({
  *   variables: {
  *      paginationInput: // value for 'paginationInput'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
  *   },
  * });
  */
