@@ -85,9 +85,9 @@ export default function Home() {
   //   console.log("songsData", songsData);
   // }, [songsData]);
 
-  // useEffect(() => {
-  //   console.log("errorSongs", errorSongs);
-  // }, [errorSongs]);
+  useEffect(() => {
+    console.log("errorSongs", errorSongs);
+  }, [errorSongs]);
 
   useEffect(() => {
     if (songs) {
@@ -169,7 +169,7 @@ export default function Home() {
       <Breadcrumbs>
         <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
       </Breadcrumbs>
-      <div className="grid grid-cols-3">
+      <div className="grid md:grid-cols-3 grid-cols-1">
         <Input
           label="Nome da música"
           placeholder="Easy On Me..."
