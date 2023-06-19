@@ -17,8 +17,8 @@ import {
   GetSongsQueryVariables,
   SongWhereInput,
   SortOrder,
-} from "@/graphql/generated-types";
-import Link from "next/link";
+} from "../../graphql/generated-types";
+import { Link } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 
 const PER_PAGE = 15;
@@ -57,7 +57,7 @@ export default function Home() {
             {song.authors?.map((author) => author?.name).join(", ")}
           </p>,
           <div key={song?.id + "actions"} className="flex justify-end">
-            <Link href={`/song/${song?.slug}`}>
+            <Link to={`/song/${song?.slug}`}>
               <IconButton icon={<FaRegEye />} size="sm" />
             </Link>
           </div>,

@@ -1,20 +1,20 @@
-"use client";
 import { Breadcrumbs, Spinner } from "hikari-ui";
 import classnames from "classnames";
-// import ReactPlayer from "";
-import dynamic from "next/dynamic";
-import { useEffect } from "react";
-import { useParams } from "next/navigation";
-import { useGetSongQuery } from "@/graphql/generated-types";
+import ReactPlayer from "react-player";
+// import dynamic from "next/dynamic";
+// import { useEffect } from "react";
+// import { useParams } from "next/navigation";
+import { useGetSongQuery } from "../../graphql/generated-types";
+import { useParams } from "react-router-dom";
 
-const ReactPlayer = dynamic(() => import("react-player"), {
-  loading: () => (
-    <div className="flex items-center justify-center w-full h-full">
-      <Spinner size={38} />
-    </div>
-  ),
-  ssr: false,
-});
+// const ReactPlayer = dynamic(() => import("react-player"), {
+//   loading: () => (
+//     <div className="flex items-center justify-center w-full h-full">
+//       <Spinner size={38} />
+//     </div>
+//   ),
+//   ssr: false,
+// });
 
 // https://www.letras.mus.br
 // https://www.youtube.com/watch?v=ONHJBgQf9vk
