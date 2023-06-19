@@ -23,11 +23,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  globalStyles();
+  // globalStyles();
   return (
     <ApolloProvider client={apolloClient}>
       <HikariProviders>
         <html lang="en">
+          <head>
+            <style
+              id="stitches"
+              dangerouslySetInnerHTML={{ __html: globalStyles() }}
+            />
+          </head>
           <body className={inter.className}>
             <div
               className={classNames(
