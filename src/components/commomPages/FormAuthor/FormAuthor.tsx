@@ -8,11 +8,11 @@ type AuthorError = {
   [Property in keyof Author]?: string;
 };
 
-interface FormAuthorProps {
-  authorId?: string;
-}
+// interface FormAuthorProps {
+//   authorId?: string;
+// }
 
-export function FormAuthor({ authorId }: FormAuthorProps) {
+export function FormAuthor() {
   const { showAlert } = useAlert();
   const [createAuthor, { loading: isCreatinAuthor }] =
     useCreateAuthorMutation();

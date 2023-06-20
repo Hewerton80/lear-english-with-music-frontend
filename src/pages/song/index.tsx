@@ -25,7 +25,7 @@ export default function SongPage() {
   const {
     data: { song } = {},
     loading: loadingSong,
-    error: errorSongs,
+    // error: errorSongs,
   } = useGetSongQuery({
     variables: { where: { slug: String(params?.slug) } },
   });
@@ -39,8 +39,12 @@ export default function SongPage() {
         <Breadcrumbs.Link href="/">{song?.title}</Breadcrumbs.Link>
       </Breadcrumbs>
       <div className="flex flex-col space-y-4">
-        <div className="aspect-video">
-          {song?.url && (
+        <div className="flex justify-center items-center aspect-video">
+          {loadingSong ? (
+            <div className="m-auto">
+              <Spinner size={38} />
+            </div>
+          ) : (
             <ReactPlayer url={song?.url} width="100%" height="100%" controls />
           )}
         </div>
