@@ -1,17 +1,22 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import Home from "./pages/songs";
-import Song from "./pages/song";
+import HomePage from "./pages/songs";
+import SongPage from "./pages/song";
+import CreateSongPage from "./pages/create-song";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <HomePage />,
   },
   {
     path: "/song/:slug",
-    element: <Song />,
+    element: <SongPage />,
+  },
+  {
+    path: "/create-song",
+    element: <CreateSongPage />,
   },
 ]);

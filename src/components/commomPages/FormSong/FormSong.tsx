@@ -1,4 +1,3 @@
-"use client";
 import {
   Button,
   Card,
@@ -15,10 +14,10 @@ import {
   GetAuthorsQueryVariables,
   useCreateSongMutation,
   MutationCreateSongArgs,
-} from "@/graphql/generated-types";
+} from "../../../graphql/generated-types";
 import { useDebouncedCallback } from "use-debounce";
 import { ApolloError } from "@apollo/client";
-import { getParsedValidationError } from "@/utils/getParsedValidationError";
+import { getParsedValidationError } from "../../../utils/getParsedValidationError";
 
 type SongError = {
   [Property in keyof (Song & { values: string })]?: string;
@@ -210,7 +209,7 @@ export function FormSong({ songId }: FormSongProps) {
           </div>
         </Card.Body>
         <Card.Footer variantStyle="right">
-          <Button isLoading={isSubmitingSong}>Criar</Button>
+          <Button type="submit" isLoading={isSubmitingSong}>Criar</Button>
         </Card.Footer>
       </form>
     </Card>

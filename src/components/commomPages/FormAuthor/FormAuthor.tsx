@@ -1,5 +1,5 @@
-import { useCreateAuthorMutation, Author } from "@/graphql/generated-types";
-import { getParsedValidationError } from "@/utils/getParsedValidationError";
+import { useCreateAuthorMutation, Author } from "../../../graphql/generated-types";
+import { getParsedValidationError } from "../../../utils/getParsedValidationError";
 import { ApolloError } from "@apollo/client";
 import { Button, Card, Input, useAlert } from "hikari-ui";
 import { FormEvent, useCallback, useState } from "react";
@@ -83,7 +83,7 @@ export function FormAuthor({ authorId }: FormAuthorProps) {
           />
         </Card.Body>
         <Card.Footer variantStyle="right">
-          <Button type="submit" isLoading={isCreatinAuthor}>
+          <Button type="submit" variantStyle="info" isLoading={isCreatinAuthor}>
             Criar
           </Button>
         </Card.Footer>

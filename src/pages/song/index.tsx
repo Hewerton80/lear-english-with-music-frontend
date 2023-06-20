@@ -19,7 +19,7 @@ import { useParams } from "react-router-dom";
 // https://www.letras.mus.br
 // https://www.youtube.com/watch?v=ONHJBgQf9vk
 // https://www.youtube.com/watch?v=EMZRnFWUGa0
-export default function Song() {
+export default function SongPage() {
   const params = useParams();
 
   const {
