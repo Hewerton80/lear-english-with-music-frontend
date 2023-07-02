@@ -1,9 +1,6 @@
 import { Breadcrumbs, Spinner } from "hikari-ui";
 import classnames from "classnames";
 import ReactPlayer from "react-player";
-// import dynamic from "next/dynamic";
-// import { useEffect } from "react";
-// import { useParams } from "next/navigation";
 import { useGetSongQuery } from "../../graphql/generated-types";
 import { useParams } from "react-router-dom";
 
@@ -27,7 +24,7 @@ export default function SongPage() {
     loading: loadingSong,
     // error: errorSongs,
   } = useGetSongQuery({
-    variables: { where: { slug: String(params?.slug) } },
+    variables: { slug: String(params?.slug) },
   });
 
   return (
@@ -48,7 +45,7 @@ export default function SongPage() {
             <ReactPlayer url={song?.url} width="100%" height="100%" controls />
           )}
         </div>
-        {song?.lyric && <p>{song?.lyric}</p>}
+        {song?.lyric?.html && <p>{song?.lyric?.html}</p>}
       </div>
     </div>
   );

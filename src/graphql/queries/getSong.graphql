@@ -1,14 +1,17 @@
-query GetSong($where: SongWhereUniqueInput!) {
-  song(where: $where) {
+query GetSong($slug: String!) {
+  song(where: {slug:$slug}) {
     id
-    lyric
+    lyric {
+      html
+    }
     slug
     title
     url
     authors {
-      name
-      slug
-      id
+      ... on Author {
+        id
+        name
+      }
     }
   }
 }

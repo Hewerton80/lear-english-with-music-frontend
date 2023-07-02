@@ -1,23 +1,25 @@
-query GetSongs($paginationInput: PaginationInput!, $orderBy: SongOrderByWithRelationInput, $where: SongWhereInput) {
-  songs(paginationInput: $paginationInput, orderBy: $orderBy, where: $where) {
-    currentPage
-    perPage
-    total
-    lastPage
-    next
-    prev
-    docs {
-      id
-      title
-      slug
-      createdAt
-      url
-      authors {
+query GetSongs($where: SongWhereInput, $orderBy: SongOrderByInput, $skip: Int = 1, $perPage: Int = 25) {
+  songs(where: $where, orderBy: $orderBy, first: $perPage, skip: $skip) {
+    id
+    slug
+    title
+    authors {
+      ... on Author {
         id
         name
-        slug
       }
-      lyric
+    }
+  }
+  songsConnection(where: $where, orderBy: $orderBy, first: $perPage, skip: $skip) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      pageSize
+    }
+  }
+  songsConnectionAggregate: songsConnection(where: $where) {
+    aggregate {
+      count
     }
   }
 }

@@ -1,5 +1,0 @@
-mutation CreateSong($data: SongCreateWithoutAuthorsInput!, $authorIds: ArrayIds!) {
-  createSong(data: $data, authorIds: $authorIds) {
-    id
-  }
-}

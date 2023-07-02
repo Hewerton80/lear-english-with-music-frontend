@@ -1,5 +1,0 @@
-mutation UpdateSong($authorIds: ArrayIds!, $where: SongWhereUniqueInput!, $data: SongUpdateWithoutAuthorsInput!) {
-  updateSong(authorIds: $authorIds, where: $where, data: $data) {
-    id
-  }
-}

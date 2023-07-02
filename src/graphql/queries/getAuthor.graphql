@@ -1,7 +1,0 @@
-query GetAuthor($where: AuthorWhereUniqueInput!) {
-  author(where: $where) {
-    slug
-    name
-    id
-  }
-}

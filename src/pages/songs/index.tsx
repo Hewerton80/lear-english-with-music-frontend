@@ -15,20 +15,21 @@ import {
   useGetSongsQuery,
   GetSongsQueryVariables,
   SongWhereInput,
-  SortOrder,
+  SongOrderByInput,
 } from "../../graphql/generated-types";
 import { Link } from "react-router-dom";
 import { useDebouncedCallback } from "use-debounce";
 
-const PER_PAGE = 15;
+const PER_PAGE = 25;
 const initialVariablesQuery: GetSongsQueryVariables = {
-  paginationInput: { currentPage: 1, perPage: PER_PAGE },
-  orderBy: { title: SortOrder.Asc },
+  orderBy: SongOrderByInput.TitleAsc,
+  skip: 0,
+  perPage: PER_PAGE,
 };
 
 export default function Home() {
   const {
-    data: { songs } = {},
+    data: { songs, songsConnection, songsConnectionAggregate } = {},
     loading: loadingSongs,
     error: errorSongs,
     refetch: refetchSongs,
@@ -49,7 +50,7 @@ export default function Home() {
 
   const rows = useMemo<IRowDataTable[]>(() => {
     return (
-      songs?.docs?.map((song) => ({
+      songs?.map((song) => ({
         contents: [
           <p key={song?.id + "title"}>{song.title}</p>,
           <p key={song?.id + "authors"}>
@@ -88,18 +89,15 @@ export default function Home() {
     console.log("errorSongs", errorSongs);
   }, [errorSongs]);
 
-  useEffect(() => {
-    if (songs) {
-      setCurrentPage(songs?.currentPage);
-    }
-  }, [songs]);
-
   const getSongsQueryVariables = useCallback(() => {
     const songsVariablesFilter: GetSongsQueryVariables = {
-      paginationInput: {
-        perPage: PER_PAGE,
-        currentPage,
-      },
+      // paginationInput: {
+      //   perPage: PER_PAGE,
+      //   currentPage,
+      // },
+      orderBy: SongOrderByInput.TitleAsc,
+      skip: (currentPage - 1) * PER_PAGE,
+      perPage: PER_PAGE,
     };
 
     let songWhereInput: SongWhereInput = {};
@@ -107,7 +105,8 @@ export default function Home() {
     if (songNameFilter.trim()) {
       songWhereInput = {
         ...songWhereInput,
-        title: { contains: songNameFilter.trim() },
+        title_contains: songNameFilter.trim(),
+        // title: { contains: songNameFilter.trim() },
       };
     }
     songsVariablesFilter.where = songWhereInput;
@@ -132,7 +131,8 @@ export default function Home() {
       setIsWriting(true);
       const songsQueryVariables = { ...getSongsQueryVariables() };
       setCurrentPage(toPage);
-      songsQueryVariables.paginationInput.currentPage = toPage;
+      // songsQueryVariables.paginationInput.currentPage = toPage;
+      songsQueryVariables.skip = (toPage - 1) * PER_PAGE;
       handleRefetchAuthors(songsQueryVariables);
     },
     [getSongsQueryVariables, handleRefetchAuthors]
@@ -146,12 +146,13 @@ export default function Home() {
       setSongNameFilter(futureSongname);
 
       const songsQueryVariables = { ...getSongsQueryVariables() };
-      songsQueryVariables.paginationInput.currentPage = 1;
+      songsQueryVariables.skip = 0;
       let songWhereInput: SongWhereInput = songsQueryVariables.where || {};
 
       songWhereInput = {
         ...songWhereInput,
-        title: { contains: futureSongname.trim() },
+        title_contains: futureSongname.trim(),
+        // title: { contains: futureSongname.trim() },
       };
 
       songsQueryVariables.where = songWhereInput;
@@ -185,10 +186,12 @@ export default function Home() {
         <DataTable columns={columns} rows={rows} />
       )}
       <PaginationBar
-        currentPage={songs?.currentPage || 1}
-        totalPages={songs?.lastPage || 1}
+        currentPage={currentPage}
+        totalPages={Math.ceil(
+          (songsConnectionAggregate?.aggregate?.count || 0) / PER_PAGE
+        )}
         perPage={PER_PAGE}
-        totalRecords={songs?.total || 0}
+        totalRecords={songsConnection?.pageInfo?.pageSize || 0}
         onChangePage={handlePage}
         disabled={loadingTableSongs}
       />
