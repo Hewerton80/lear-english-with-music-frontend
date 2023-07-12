@@ -3,6 +3,7 @@ import classnames from "classnames";
 import ReactPlayer from "react-player";
 import { useGetSongQuery } from "../../graphql/generated-types";
 import { useParams } from "react-router-dom";
+import { InnerHtmlContent } from "../../components/ui/InnerHTMLContent";
 
 // const ReactPlayer = dynamic(() => import("react-player"), {
 //   loading: () => (
@@ -29,14 +30,18 @@ export default function SongPage() {
 
   return (
     <div
-      className={classnames("flex flex-col", "space-y-4", "max-w-2xl w-full")}
+      className={classnames(
+        "flex flex-col items-center",
+        "space-y-4",
+        " w-full"
+      )}
     >
-      <Breadcrumbs>
-        <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
-        <Breadcrumbs.Link href="/">{song?.title}</Breadcrumbs.Link>
-      </Breadcrumbs>
       <div className="flex flex-col space-y-4">
-        <div className="flex justify-center items-center aspect-video">
+        <Breadcrumbs>
+          <Breadcrumbs.Link href="/">Home</Breadcrumbs.Link>
+          <Breadcrumbs.Link href="/">{song?.title}</Breadcrumbs.Link>
+        </Breadcrumbs>
+        <div className="flex justify-center max-w-3xl items-center aspect-video">
           {loadingSong ? (
             <div className="m-auto">
               <Spinner size={38} />
@@ -45,7 +50,9 @@ export default function SongPage() {
             <ReactPlayer url={song?.url} width="100%" height="100%" controls />
           )}
         </div>
-        {song?.lyric?.html && <p>{song?.lyric?.html}</p>}
+        {song?.lyric?.html && (
+          <InnerHtmlContent htmlContent={song?.lyric?.html} />
+        )}
       </div>
     </div>
   );

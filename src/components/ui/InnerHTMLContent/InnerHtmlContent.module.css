@@ -1,0 +1,32 @@
+.root {
+  @apply text-xs;
+}
+.root table{
+    @apply w-full;
+  }
+.root p {
+  @apply mb-4 border-b;
+}
+.root tr {
+  @apply flex flex-col ;
+}
+.root tr td:first-of-type {
+  border-bottom: 1px solid theme("colors.zinc.900");
+  @apply text-center pb-4;
+}
+.root tr td:last-of-type {
+  @apply text-center pt-8;
+}
+
+@media (min-width: 678px) {
+  .root tr {
+    display: initial;
+    
+  }
+  .root tr td:first-of-type {
+    @apply text-right pr-2 pb-0 border-none;
+  }
+  .root tr td:last-of-type {
+    @apply text-left pl-2 pt-0;
+  }
+}

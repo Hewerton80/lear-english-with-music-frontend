@@ -21,7 +21,7 @@ function App() {
           <div
             className={classNames(
               "flex flex-col items-center flex-1",
-              "w-full h-full px-4"
+              "w-full h-full px-4 mb-8"
             )}
           >
             <RouterProvider router={router} />
